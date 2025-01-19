@@ -32,6 +32,7 @@ func updatePbUsersAuth(app core.App) error {
 	}
 
 	collection.CreateRule = nil
+	collection.AuthRule = types.Pointer("verified = true")
 
 	if err := app.Save(collection); err != nil {
 		return fmt.Errorf("failed to update '_pb_users_auth_' collection: %w", err)
@@ -107,7 +108,7 @@ func createEmails(app core.App) error {
 
 	collection.ListRule = types.Pointer("smtp_account.created_by.id = @request.auth.id")
 	collection.ViewRule = types.Pointer("smtp_account.created_by.id = @request.auth.id")
-	collection.CreateRule = types.Pointer(`@request.auth.id != ""`)
+	collection.CreateRule = nil
 	collection.UpdateRule = types.Pointer("smtp_account.created_by.id = @request.auth.id")
 	collection.DeleteRule = types.Pointer("smtp_account.created_by.id = @request.auth.id")
 
@@ -119,9 +120,6 @@ func createEmails(app core.App) error {
 			MaxSelect:    1,
 			Presentable:  true,
 			Required:     true,
-		},
-		&core.BoolField{
-			Name: "inserted",
 		},
 		&core.TextField{
 			Name:        "folder",
@@ -168,9 +166,9 @@ func createEmails(app core.App) error {
 		},
 	)
 
-	collection.AddIndex("idx_ib_emails_folder", false, "`smtp_account`,`inserted`,`folder`", "")
-	collection.AddIndex("idx_ib_emails_uid", false, "`smtp_account`,`inserted`,`uid`", "")
-	collection.AddIndex("idx_ib_emails_message_id", false, "`smtp_account`,`inserted`,`message_id`", "")
+	collection.AddIndex("idx_ib_emails_folder", false, "`smtp_account`,`folder`", "")
+	collection.AddIndex("idx_ib_emails_uid", false, "`smtp_account`,`uid`", "")
+	collection.AddIndex("idx_ib_emails_message_id", false, "`smtp_account`,`message_id`", "")
 
 	if err := app.Save(collection); err != nil {
 		return fmt.Errorf("failed to create 'emails' collection: %w", err)
@@ -185,7 +183,7 @@ func createEmailFlags(app core.App) error {
 
 	collection.ListRule = types.Pointer("email.smtp_account.created_by.id = @request.auth.id")
 	collection.ViewRule = types.Pointer("email.smtp_account.created_by.id = @request.auth.id")
-	collection.CreateRule = types.Pointer(`@request.auth.id != ""`)
+	collection.CreateRule = nil
 	collection.UpdateRule = types.Pointer("email.smtp_account.created_by.id = @request.auth.id")
 	collection.DeleteRule = types.Pointer("email.smtp_account.created_by.id = @request.auth.id")
 
@@ -225,7 +223,7 @@ func createEmailFromAddresses(app core.App) error {
 
 	collection.ListRule = types.Pointer("email.smtp_account.created_by.id = @request.auth.id")
 	collection.ViewRule = types.Pointer("email.smtp_account.created_by.id = @request.auth.id")
-	collection.CreateRule = types.Pointer(`@request.auth.id != ""`)
+	collection.CreateRule = nil
 	collection.UpdateRule = types.Pointer("email.smtp_account.created_by.id = @request.auth.id")
 	collection.DeleteRule = types.Pointer("email.smtp_account.created_by.id = @request.auth.id")
 
@@ -262,7 +260,7 @@ func createEmailToAddresses(app core.App) error {
 
 	collection.ListRule = types.Pointer("email.smtp_account.created_by.id = @request.auth.id")
 	collection.ViewRule = types.Pointer("email.smtp_account.created_by.id = @request.auth.id")
-	collection.CreateRule = types.Pointer(`@request.auth.id != ""`)
+	collection.CreateRule = nil
 	collection.UpdateRule = types.Pointer("email.smtp_account.created_by.id = @request.auth.id")
 	collection.DeleteRule = types.Pointer("email.smtp_account.created_by.id = @request.auth.id")
 
@@ -299,7 +297,7 @@ func createEmailReplyToAddresses(app core.App) error {
 
 	collection.ListRule = types.Pointer("email.smtp_account.created_by.id = @request.auth.id")
 	collection.ViewRule = types.Pointer("email.smtp_account.created_by.id = @request.auth.id")
-	collection.CreateRule = types.Pointer(`@request.auth.id != ""`)
+	collection.CreateRule = nil
 	collection.UpdateRule = types.Pointer("email.smtp_account.created_by.id = @request.auth.id")
 	collection.DeleteRule = types.Pointer("email.smtp_account.created_by.id = @request.auth.id")
 
@@ -336,7 +334,7 @@ func createEmailCcAddresses(app core.App) error {
 
 	collection.ListRule = types.Pointer("email.smtp_account.created_by.id = @request.auth.id")
 	collection.ViewRule = types.Pointer("email.smtp_account.created_by.id = @request.auth.id")
-	collection.CreateRule = types.Pointer(`@request.auth.id != ""`)
+	collection.CreateRule = nil
 	collection.UpdateRule = types.Pointer("email.smtp_account.created_by.id = @request.auth.id")
 	collection.DeleteRule = types.Pointer("email.smtp_account.created_by.id = @request.auth.id")
 
@@ -373,7 +371,7 @@ func createEmailBccAddresses(app core.App) error {
 
 	collection.ListRule = types.Pointer("email.smtp_account.created_by.id = @request.auth.id")
 	collection.ViewRule = types.Pointer("email.smtp_account.created_by.id = @request.auth.id")
-	collection.CreateRule = types.Pointer(`@request.auth.id != ""`)
+	collection.CreateRule = nil
 	collection.UpdateRule = types.Pointer("email.smtp_account.created_by.id = @request.auth.id")
 	collection.DeleteRule = types.Pointer("email.smtp_account.created_by.id = @request.auth.id")
 
@@ -410,7 +408,7 @@ func createEmailAttachments(app core.App) error {
 
 	collection.ListRule = types.Pointer("email.smtp_account.created_by.id = @request.auth.id")
 	collection.ViewRule = types.Pointer("email.smtp_account.created_by.id = @request.auth.id")
-	collection.CreateRule = types.Pointer(`@request.auth.id != ""`)
+	collection.CreateRule = nil
 	collection.UpdateRule = types.Pointer("email.smtp_account.created_by.id = @request.auth.id")
 	collection.DeleteRule = types.Pointer("email.smtp_account.created_by.id = @request.auth.id")
 
