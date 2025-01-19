@@ -151,9 +151,9 @@ func createEmails(app core.App) error {
 			Name: "text",
 			Max:  maxTextLength,
 		},
-		&core.TextField{
-			Name: "html",
-			Max:  maxTextLength,
+		&core.EditorField{
+			Name:    "html",
+			MaxSize: maxTextLength,
 		},
 		&core.AutodateField{
 			Name:     "created",
