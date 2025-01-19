@@ -5,10 +5,16 @@ import (
 
 	"github.com/pocketbase/pocketbase"
 	"github.com/pocketbase/pocketbase/core"
+	"github.com/yerTools/imapbackup/src/go/database"
 )
 
 func main() {
 	app := pocketbase.New()
+	app.RootCmd.Version = Version
+	app.RootCmd.Use = "imapbackup"
+	app.RootCmd.Short = ""
+
+	database.Init(app)
 
 	app.OnServe().BindFunc(func(se *core.ServeEvent) error {
 		// registers new "GET /hello" route
